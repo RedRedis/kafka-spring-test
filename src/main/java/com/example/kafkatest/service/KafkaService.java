@@ -1,5 +1,7 @@
 package com.example.kafkatest.service;
 
+import com.example.kafkatest.entities.Message;
+import com.example.kafkatest.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -12,8 +14,14 @@ public class KafkaService {
     @Value("${spring.kafka.topic}")
     private String topic;
 
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final MessageRepository messageRepository;
+
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    public KafkaService(KafkaTemplate<String, String> kafkaTemplate, MessageRepository messageRepository) {
+        this.kafkaTemplate = kafkaTemplate;
+        this.messageRepository = messageRepository;
+    }
 
     public void produce(String msg) {
         kafkaTemplate.send(topic, msg);
@@ -21,6 +29,6 @@ public class KafkaService {
 
     @KafkaListener(topics = "${spring.kafka.topic}", groupId = "${spring.kafka.consumer.group-id}")
     public void consume(String msg) {
-        System.err.println(msg);
+        messageRepository.save(new Message(msg));
     }
 }
