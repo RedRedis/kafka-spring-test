@@ -8,11 +8,10 @@ spring:
     consumer:
       key-serializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      group-id: test
+      group-id: testpostman
       auto-offset-reset: earliest
   datasource:
     url: "jdbc:postgresql://localhost:5432/postgres"
     username: "postgres"
     password: "postgres"
     driver-class-name: "org.postgresql.Driver"
-
