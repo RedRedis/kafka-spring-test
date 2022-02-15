@@ -1,14 +1,12 @@
 package com.example.kafkatest.controller;
 
+import com.example.kafkatest.entities.Person;
 import com.example.kafkatest.service.KafkaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/produce")
@@ -23,9 +21,9 @@ public class KafkaController {
     }
 
     @PostMapping("/send")
-    public ResponseEntity<String> produceMassage(@RequestBody String msg) {
-        logger.info("Received from postman: {}", msg);
-        kafkaService.produce(msg);
-        return ResponseEntity.ok().body("Message delivered:\n" + msg);
+    public ResponseEntity<Person> produceMassage(@RequestBody Person person) {
+        logger.info("Received from postman: {}", person);
+        kafkaService.produce(person);
+        return ResponseEntity.ok().body(person);
     }
 }
